@@ -1,0 +1,13 @@
+body { padding-top: 60px; }
+
+.navbar-default,
+.navbar-default .navbar-nav > li > a:focus {
+    background-color: #3071a9;
+    border-color: #3071a9;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: #ecf0f1;
+}
