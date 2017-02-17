@@ -11,12 +11,21 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="application-name" content="Simple Train Times">
-	<meta name="mobile-web-app-capable" content="yes">
-	<link rel="shortcut icon" sizes="196x196" href="images/icon-196.png">
-	
+	<meta name="mobile-web-app-capable" content="yes">	
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-title" content="Simple Train Times">
-	<link rel="apple-touch-icon" href="images/icon-152.png">
+	<link rel="manifest" href="/manifest.json">
+
+	<!-- ****** faviconit.com favicons ****** -->
+	<link rel="shortcut icon" href="/images/favicon.ico">
+	<link rel="icon" sizes="16x16 32x32 64x64" href="/images/favicon.ico">
+	<link rel="icon" type="image/png" sizes="196x196" href="/images/favicon-192.png">
+	<link rel="apple-touch-icon" href="/images/favicon-57.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/images/favicon-120.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-180.png">
+	<meta name="msapplication-TileColor" content="#FFFFFF">
+	<meta name="msapplication-TileImage" content="/images/favicon-144.png">
+	<!-- ****** faviconit.com favicons ****** -->	
 		
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
 	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.3.1.js"></script>
@@ -53,9 +62,9 @@
 						<form>
 							<div class="form-group">
 								<label for="fromInput">From Station</label>
-								<input type="text" autocomplete="off" ng-model="fromStation" placeholder="Station name" typeahead-on-select='onSelect($item, $model, $label)'
+								<input type="text" autocomplete="off" ng-model="fromStation" placeholder="Station name" typeahead-on-select='getTrainTimes()'
 									uib-typeahead="station for station in getStations($viewValue)" typeahead-loading="loadingStations" typeahead-no-results="noResults"
-									typeahead-min-length=3 typeahead-wait-ms=200 class="form-control">
+									typeahead-min-length=3 typeahead-wait-ms=200 typeahead-editable=false class="form-control">
 									<i ng-show="loadingStations" class="glyphicon glyphicon-refresh"></i>
 									<div ng-show="noResults">
 										<i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -63,9 +72,9 @@
 							</div>
 							<div class="form-group">
 								<label for="toInput">To Station</label>
-								<input type="text" autocomplete="off" ng-model="toStation" placeholder="Station name" typeahead-on-select='onSelect($item, $model, $label)'
+								<input type="text" autocomplete="off" ng-model="toStation" placeholder="Station name" typeahead-on-select='getTrainTimes()'
 									uib-typeahead="station for station in getStations($viewValue)" typeahead-loading="loadingToStations" typeahead-no-results="noToResults"
-									typeahead-min-length=3 typeahead-wait-ms=200 class="form-control">
+									typeahead-min-length=3 typeahead-wait-ms=200 typeahead-editable=false class="form-control">
 									<i ng-show="loadingToStations" class="glyphicon glyphicon-refresh"></i>
 									<div ng-show="noToResults">
 										<i class="glyphicon glyphicon-remove"></i> No Results Found
