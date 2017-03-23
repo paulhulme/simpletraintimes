@@ -7,140 +7,146 @@
 <html ng-app="SimpleTrainTimes">
 
 <head>
-	<title>Simple Train Times</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="application-name" content="Simple Train Times">
-	<meta name="mobile-web-app-capable" content="yes">	
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-title" content="Simple Train Times">
-	<link rel="manifest" href="/manifest.json">
+    <title>Simple Train Times</title>
+    <meta name="description" content="Simple Train Times is the easy way to get UK train times. Perfect for commuters to quickly check departure board information on smartphones. Powered by National Rail Enquiries.">
+    <meta charset="UTF-8">
+    <meta name="author" content="Paul Hulme">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="application-name" content="Simple Train Times">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Simple Train Times">
+    <link rel="manifest" href="/manifest.json">
+    <base href="/">
 
-	<!-- ****** faviconit.com favicons ****** -->
-	<link rel="shortcut icon" href="/images/favicon.ico">
-	<link rel="icon" sizes="16x16 32x32 64x64" href="/images/favicon.ico">
-	<link rel="icon" type="image/png" sizes="196x196" href="/images/favicon-192.png">
-	<link rel="apple-touch-icon" href="/images/favicon-57.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="/images/favicon-120.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-180.png">
-	<meta name="msapplication-TileColor" content="#FFFFFF">
-	<meta name="msapplication-TileImage" content="/images/favicon-144.png">
-	<!-- ****** faviconit.com favicons ****** -->	
-		
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
-	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.3.1.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
-	<script src="app.js"></script>
-	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="app.css">
+    <!-- ****** faviconit.com favicons ****** -->
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="196x196" href="/images/favicon-192.png">
+    <link rel="apple-touch-icon" href="/images/favicon-57.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-180.png">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="/images/favicon-144.png">
+    <!-- ****** faviconit.com favicons ****** -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.3.1.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+    <script src="/js/STTapp.js"></script>
+    <script src="/js/STTcontroller.js"></script>
+    <script src="/js/huxleyService.js"></script>
+    <script src="/js/stationDataSvc.js"></script>
+    <script src="/js/trainTimesDataSvc.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/app.css">
 </head>
 
 <body>
-	<div class='container-fluid' ng-controller="SimpleTrainTimesCtrl">
-		<nav class="navbar navbar-default navbar-fixed-top bg-primary">
-			<div class="navbar-header">
-				<a class="navbar-brand"> Simple Train Times </a>
-				<button type="button" class="btn navbar-btn  btn-primary" ng-click="refresh()">
+    <div class='container-fluid' ng-controller="SimpleTrainTimesCtrl">
+        <nav class="navbar navbar-default navbar-fixed-top bg-primary">
+            <div class="navbar-header">
+                <a class="navbar-brand"> Simple Train Times </a>
+                <button type="button" class="btn navbar-btn  btn-primary" ng-click="refresh()">
 					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 				</button>
-				<button type="button" class="btn navbar-btn btn-primary" ng-click="switch()">
+                <button type="button" class="btn navbar-btn btn-primary" ng-click="switch()">
 					<span class="glyphicon glyphicon-random" aria-hidden="true"></span>
 				</button>
-			</div>
-		</nav>
+            </div>
+        </nav>
 
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-default panel-primary">
-					<div class="panel-heading" ng-click="formOpen = !formOpen">
-						<h3 class="panel-title">Select stations</h3>
-					</div>
-					<div class="panel-body" uib-collapse="!formOpen">
-						<form>
-							<div class="form-group">
-								<label for="fromInput">From Station</label>
-								<input type="text" autocomplete="off" ng-model="fromStation" placeholder="Station name" typeahead-on-select='getTrainTimes()'
-									uib-typeahead="station for station in getStations($viewValue)" typeahead-loading="loadingStations" typeahead-no-results="noResults"
-									typeahead-min-length=3 typeahead-wait-ms=200 typeahead-editable=false class="form-control">
-									<i ng-show="loadingStations" class="glyphicon glyphicon-refresh"></i>
-									<div ng-show="noResults">
-										<i class="glyphicon glyphicon-remove"></i> No Results Found
-									</div>
-							</div>
-							<div class="form-group">
-								<label for="toInput">To Station</label>
-								<input type="text" autocomplete="off" ng-model="toStation" placeholder="Station name" typeahead-on-select='getTrainTimes()'
-									uib-typeahead="station for station in getStations($viewValue)" typeahead-loading="loadingToStations" typeahead-no-results="noToResults"
-									typeahead-min-length=3 typeahead-wait-ms=200 typeahead-editable=false class="form-control">
-									<i ng-show="loadingToStations" class="glyphicon glyphicon-refresh"></i>
-									<div ng-show="noToResults">
-										<i class="glyphicon glyphicon-remove"></i> No Results Found
-									</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default panel-primary">
+                    <div class="panel-heading" ng-click="formOpen = !formOpen">
+                        <h3 class="panel-title">Select stations</h3>
+                    </div>
+                    <div class="panel-body" uib-collapse="!formOpen">
+                        <form>
+                            <div class="form-group">
+                                <label for="fromInput">From Station</label>
+                                <input type="text" autocomplete="off" spellcheck="false" autocorrect="off" ng-model="stations.from" placeholder="Station name" typeahead-on-select='getTrainTimes()' uib-typeahead="station as station.display for station in stations.search($viewValue)"
+                                    typeahead-loading="loadingStations" typeahead-no-results="noResults" typeahead-min-length=3 typeahead-wait-ms=200 typeahead-editable=false class="form-control">
+                                <i ng-show="loadingStations" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResults">
+                                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="toInput">To Station</label>
+                                <input type="text" autocomplete="off" spellcheck="false" autocorrect="off" ng-model="stations.to" placeholder="Station name" typeahead-on-select='getTrainTimes()' uib-typeahead="station as station.display for station in stations.search($viewValue)" typeahead-loading="loadingToStations"
+                                    typeahead-no-results="noToResults" typeahead-min-length=3 typeahead-wait-ms=200 typeahead-editable=false class="form-control">
+                                <i ng-show="loadingToStations" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noToResults">
+                                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-default panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">Train time results {{updated}}</h3>
-					</div>
-					<table class="table table-responsive table-striped table-hover" uib-collapse="!tableOpen">
-						<thead>
-							<tr>
-								<th ng-click="sortBy='timeToDepart'">Departs ({{fromCRS}}) <br>
-									<span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='timeToDepart'"></span>
-								</th>
-								<th>P</th>
-								<th ng-click="sortBy='travelTime'"> Travel Time <br>
-									<span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='travelTime'"></span>
-								</th>
-								<th ng-click="sortBy='timeToArrive'">Arrives ({{toCRS}}) <br>
-									<span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='timeToArrive'"></span>
-								</th>
-								<th ng-click="sortBy='status'">Status <br>
-									<span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='status'"></span>
-								</th>
-							</tr>
-						</thead>
-						<tbody ng-repeat="x in ttData | orderBy:sortBy">
-							<tr class="clickableRow" ng-click="toggleOpen(x.std)" ng-class="{ 'On time': 'success', 'Delayed': 'warning', 'Long Delay': 'danger', 'Cancelled': 'danger', 'DISCONNECTED': 'danger'}[x.status]">
-								<td>{{x.std}} {{x.etd}}</td>
-								<td>{{x.platform}}</td>
-								<td>{{x.travelTime}}</td>
-								<td>{{x.destCallPt.st}} {{x.eta}}</td>
-								<td>{{x.status}} {{x.minsDelayed}}</td>
-							</tr>
-							<tr class="clickableRow" ng-click="toggleOpen(x.std)" ng-show=isOpen[x.std]>
-								<td></td>
-								<td></td>
-								<td>{{x.stops}}</td>
-								<td></td>
-								<td>{{x.operator}} <br> {{x.reason}}</td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="panel-footer">
-						<a href="http://www.nationalrail.co.uk/">
-							<img class="img-responsive" src="images/NRE_logo.jpg" width="350">
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Train time results {{depBd.status}}</h3>
+                    </div>
+                    <table class="table table-responsive table-striped table-hover" uib-collapse="!depBd.status">
+                        <thead>
+                            <tr>
+                                <th ng-click="sortBy='timeToDepart'">Departs ({{depBd.fromCRS}}) <br>
+                                    <span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='timeToDepart'"></span>
+                                </th>
+                                <th>P</th>
+                                <th ng-click="sortBy='travelTime'"> Travel Time <br>
+                                    <span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='travelTime'"></span>
+                                </th>
+                                <th ng-click="sortBy='timeToArrive'">Arrives ({{depBd.toCRS}}) <br>
+                                    <span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='timeToArrive'"></span>
+                                </th>
+                                <th ng-click="sortBy='status'">Status <br>
+                                    <span class="glyphicon glyphicon-triangle-bottom" ng-show="sortBy==='status'"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="x in depBd.TTData | orderBy:sortBy">
+                            <tr class="clickableRow" ng-click="x.isOpen = !x.isOpen" ng-class="{ 'On time': 'success', 'Delayed': 'warning', 'Long Delay': 'danger', 'Cancelled': 'danger', 'DISCONNECTED': 'danger'}[x.status]">
+                                <td>{{x.std}} {{x.etd}}</td>
+                                <td>{{x.platform}}</td>
+                                <td>{{x.travelTime}}</td>
+                                <td>{{x.sta}} {{x.eta}}</td>
+                                <td>{{x.status}} {{x.minsDelayed}}</td>
+                            </tr>
+                            <tr class="clickableRow" ng-click="x.isOpen = !x.isOpen" ng-show=x.isOpen>
+                                <td>{{x.carriages}}</td>
+                                <td></td>
+                                <td>{{x.stops}}</td>
+                                <td></td>
+                                <td>{{x.operator}} <br> {{x.reason}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="panel-footer">
+                        <a href="http://www.nationalrail.co.uk/">
+                            <img class="img-responsive" src="/images/NRE_logo.jpg" width="350">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div id="footer" xmlns:dc="http://purl.org/dc/elements/1.1/">
-			<span property="dc:publisher">
-				by <a href="https://github.com/paulhulme/">Paul Hulme</a>
+        <div class="col-md-6 col-md-offset-3" id="footer" xmlns:dc="http://purl.org/dc/elements/1.1/">
+            <span property="dc:publisher">
+                <p>
+                    Simple Train Times is the easy way to get UK train times. Perfect for commuters to quickly check departure board information on smartphones.<br>
+                    by <a href="https://github.com/paulhulme/">Paul Hulme</a>
+                </p>
 			</span>
-		</div>
+        </div>
 
 </body>
 
