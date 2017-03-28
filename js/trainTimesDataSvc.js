@@ -47,8 +47,12 @@ angular.module('SimpleTrainTimes').service('trainTimesDataSvc', function(huxleyS
     function parseDepBd(DBwithDetails) {
         var ret = [];
 
-        function filterCallBack(item) {
+        function destCPCallBack(item) {
             return item.crs === DBwithDetails.filtercrs;
+        }
+
+        function notNullCallBack(item) {
+            return item !== undefined;
         }
 
         for (var i = 0; i < DBwithDetails.trainServices.length; i++) {
@@ -63,9 +67,13 @@ angular.module('SimpleTrainTimes').service('trainTimesDataSvc', function(huxleyS
                 isOpen: false
             };
 
-            //set the destination values
+            // set the destination values
             var subCallPts = ts.subsequentCallingPoints[0].callingPoint;
-            var destCallPt = subCallPts.filter(filterCallBack)[0];
+            var destCallPt = subCallPts.filter(destCPCallBack)[0];
+            // Sometimes the DBwithDetails has services that don't stop at the destination!!
+            if (destCallPt === undefined) {
+                continue;
+            }
             res.stops = subCallPts.indexOf(destCallPt) + ' stops';
             res.sta = destCallPt.st;
 
@@ -109,7 +117,7 @@ angular.module('SimpleTrainTimes').service('trainTimesDataSvc', function(huxleyS
 
             ret[i] = res;
         }
-        return ret;
+        return ret.filter(notNullCallBack); // filter out blanks
     }
 
     /** Subtracts t2 from t1 with a rollover for times around midnight (e.g. 00:45 - 11:55). */
