@@ -49,7 +49,7 @@ angular.module('SimpleTrainTimes').service('stationDataSvc', function(huxleyServ
 
     this.validStations = function() {
         return this.from && this.to && this.from.crs && this.to.crs;
-    }
+    };
 
     /** Puts to and from stations in local storage for retrieval later */
     this.saveState = function() {
@@ -72,8 +72,9 @@ angular.module('SimpleTrainTimes').service('stationDataSvc', function(huxleyServ
                 this.to.CRS = localStorage.toCrs;
                 // if time now is in a 4 hour window of last checked then get times, else switch for return journey
                 var timeNow = (Date.now() - localStorage.time) / 60000;
-                if ((timeNow > 120) || (timeNow < 1080)) {
+                if ((timeNow > 120) && (timeNow < 1080)) {
                     this.switch();
+                    this.saveState();
                 }
                 return true;
             }

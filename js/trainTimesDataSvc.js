@@ -26,7 +26,7 @@ angular.module('SimpleTrainTimes').service('trainTimesDataSvc', function(huxleyS
                 // check that there are services to parse
                 if (response.data.trainServices === null) {
                     self.TTData = [{
-                        std: "No direct services found. You may need to use a journey planner like National Rail Enquiries."
+                        std: "No direct trains for 2 hours. You may need a journey planner, like National Rail Enquiries."
                     }];
                     self.status = 'No Direct Services';
                 } else {
@@ -98,7 +98,7 @@ angular.module('SimpleTrainTimes').service('trainTimesDataSvc', function(huxleyS
                 var delayMins;
                 if (ts.etd === 'On time') {
                     delayMins = subTimes(ETA, res.sta);
-                } else {
+                } else if (ts.etd.indexOf(':') > -1) {
                     delayMins = subTimes(ts.etd, ts.std);
                     res.etd = '(' + ts.etd + ')';
                     res.timeToDepart = subTimes(ts.etd, timeNow);
@@ -110,7 +110,9 @@ angular.module('SimpleTrainTimes').service('trainTimesDataSvc', function(huxleyS
             }
             res.travelTime = (res.timeToArrive - res.timeToDepart) + 'mins';
 
-            if (ETA === 'Cancelled') {
+            if (ETA === 'Cancelled' || ts.etd === 'Cancelled') {
+                res.status = 'Cancelled';
+                res.minsDelayed = '';
                 res.timeToArrive = 1440;
                 if (ts.cancelReason) res.reason = ts.cancelReason;
             }

@@ -17,6 +17,7 @@ angular.module('SimpleTrainTimes').run(function($rootScope, $location, stationDa
     if ($location.path().indexOf('/to/') !== 4) {
         if (stationDataSvc.restoreState()) {
             trainTimesDataSvc.getTrainTimes(stationDataSvc.from.crs, stationDataSvc.to.crs);
+            stationDataSvc.saveState();
         }
     }
 
@@ -35,12 +36,14 @@ angular.module('SimpleTrainTimes').run(function($rootScope, $location, stationDa
                 stationDataSvc.from = data[0];
                 if (stationDataSvc.validStations()) {
                     trainTimesDataSvc.getTrainTimes(stationDataSvc.from.crs, stationDataSvc.to.crs);
+                    stationDataSvc.saveState();
                 }
             });
             stationDataSvc.search(to).then(function(data) {
                 stationDataSvc.to = data[0];
                 if (stationDataSvc.validStations()) {
                     trainTimesDataSvc.getTrainTimes(stationDataSvc.from.crs, stationDataSvc.to.crs);
+                    stationDataSvc.saveState();
                 }
             });
         }
