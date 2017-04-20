@@ -65,7 +65,7 @@ angular.module('SimpleTrainTimes').service('stationDataSvc', function(huxleyServ
     /** Retrieves to and from stations from local storage */
     this.restoreState = function() {
         if (typeof(Storage) !== "undefined") {
-            if (localStorage.from) {
+            if (localStorage.fromName) {
                 this.from.name = localStorage.fromName;
                 this.from.CRS = localStorage.fromCrs;
                 this.to.name = localStorage.toName;
